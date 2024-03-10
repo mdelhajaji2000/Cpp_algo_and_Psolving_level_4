@@ -181,10 +181,57 @@ namespace Cal
         return Day == GetLastDayinMonth(year, month);
     }
 
+    bool Is_Last_Day_In_month(stDate Date)
+    {
+        return Date.day == GetLastDayinMonth(Date.year, Date.month);
+    }
+
 
     bool Is_Last_Month_In_Year(int month)
     {
         return month == 12;
+    }
+
+    stDate IncreaseDateByOneDay(stDate Date) // increase date by one day {function nedded in other function}
+    {
+        if (Is_Last_Day_In_month(Date))
+        {
+            if (Is_Last_Month_In_Year(Date.month))
+            {
+                Date.month = 1;
+                Date.day = 1;
+                Date.year++;
+            }
+            else {
+                Date.day = 1;
+                Date.month++;
+            }
+        }
+        else {
+            Date.day++;
+        }
+
+        return Date;
+    }
+
+    bool IsDate1BeforeDate2(stDate Date1, stDate Date2) {
+        return (Date1.year < Date2.year) ? true :
+            (Date1.year > Date2.year) ? false :
+            (Date1.month < Date2.month) ? true :
+            (Date1.month > Date2.month) ? false :
+            (Date1.day < Date2.day);
+    }
+
+    int GettDiferenceInDays(stDate Date1, stDate Date2, bool IncludeEndDay = false)
+    {
+        int Days = 0;
+        while (IsDate1BeforeDate2(Date1, Date2))
+        {
+            Days++;
+            Date1 = IncreaseDateByOneDay(Date1);
+        }
+
+        return IncludeEndDay ? ++Days : Days;
     }
 
 } // namespace Cal
