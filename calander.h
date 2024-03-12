@@ -1,29 +1,21 @@
-//----------------------------------------------------------
-//          Calander Header File :
-//     Library of Functions that contain a Basic Calander
-//  functions like function to read correctly a month
-//  or a function to print The Day using The numeric Date... 
-//  use only Cal namespace !
-//  By : Mdelhajaji2000
-//----------------------------------------------------------
 #pragma once
-
+                                // Letter on we will meke this labrary compatble withc any cpp file !
 #include <iostream>
 #include <string>
 #include <iomanip>
 
-using namespace std;
+using namespace std; // You can keep this if you prefer
 
-namespace Cal
+namespace cal
 {
 
+    template<typename T>
     struct stDate
     {
-        int year;
-        int month;
-        int day;
+        T year;
+        T month;
+        T day;
     };
-    
 
     int Read_month(string message = "enter month : ")
     {
@@ -41,26 +33,28 @@ namespace Cal
         int year;
         cout << message;
         cin >> year;
+        return year; // Add return statement
     }
 
     bool IsleapYear(short y)
     {
-	    return (y% 400 == 0 || y % 4 == 0)&&(y%100!=0);
+        return (y % 400 == 0 || (y % 4 == 0 && y % 100 != 0));
     }
 
     int DaysInyear(int year)
     {
         bool isLeap = IsleapYear(year);
         if (isLeap) return 366;
+
         return 365;
     }
 
     short NumberOfdaysinMonths(short Month, short Year) 
     {
-        return (Month == 2) ? IsleapYear(Year) ? 29 : 28 : (Month == 4 || Month == 6 || Month == 9 || Month == 11) ? 30 : 31;
+        return (Month == 2) ? (IsleapYear(Year) ? 29 : 28) : ((Month == 4 || Month == 6 || Month == 9 || Month == 11) ? 30 : 31);
     }
 
-    int Daypos(int year, int month, int day) // get Day position start from saturday = 0
+    int Daypos(int year, int month, int day) // get Day position start from Saturday = 0
     {
         int a = ((14 - month) / 12);
         int y = year - a;
@@ -71,32 +65,32 @@ namespace Cal
 
     string Day(int daypos)
     {
-        string Week[7] = {"Satur", "Mon", "Tue", "Wed", "Thu", "Fri", "Sun"};
+        string Week[7] = {"Saturday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"};
         return Week[daypos];
     }
 
-    string DayShortName(int daypos) {
-    string Week[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-    return Week[daypos];
-}
+    string DayShortName(int daypos) 
+    {
+        string Week[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        return Week[daypos];
+    }
 
     string MonthShortName(int month) 
     {
-        string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        string months[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
         return months[month - 1];
     }
 
     int NumbersOfDaysInMonth(int month, int year) 
     {
-    if (month < 1 || month > 12)
-        return 0;
+        if (month < 1 || month > 12)
+            return 0;
 
-    int Days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (month == 2 && IsleapYear(year))
-        return 29;
-    else
-        return Days[month - 1];
+        int Days[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (month == 2 && IsleapYear(year))
+            return 29;
+        else
+            return Days[month - 1];
     }
 
     void PrintCalendar(int month, int year) 
@@ -122,7 +116,7 @@ namespace Cal
         cout << "\n  _________________________________\n";
     }
 
-    int ClaculatDays(int year, int month, int Day) // return the number of days sience the 1st january of the year
+    int ClaculatDays(int year, int month, int Day) // return the number of days since the 1st January of the year
     {
         int DaysSum = 0;
         for (int i = month - 1; i > 0; i--)
@@ -134,9 +128,10 @@ namespace Cal
         return DaysSum;
     }
 
-    stDate TotalDaysToDate(short totalDays, short year)
+    template<typename T>
+    stDate<T> TotalDaysToDate(short totalDays, short year)
     {
-        stDate date;
+        stDate<T> date;
 
         date.year = year;
         date.month = 1;
@@ -158,15 +153,10 @@ namespace Cal
         return date;
     }
 
-
-    bool IsDate1EqualDate2(stDate date1, stDate date2 )
+    template<typename T>
+    bool IsDate1EqualDate2(stDate<T> date1, stDate<T> date2 )
     {
-        
-        return  (
-                 date1.year == date2.year &&
-                 date1.month == date2.month &&
-                 date1.day == date2.day
-                 );
+        return (date1.year == date2.year && date1.month == date2.month && date1.day == date2.day);
     } 
 
     int GetLastDayinMonth(int year, int month)
@@ -175,24 +165,24 @@ namespace Cal
         return (month == 2 && IsleapYear(year)) ? 29 : LastDay[month - 1];
     }
 
-
     bool Is_Last_Day_In_month(int year, int month, int Day)
     {
         return Day == GetLastDayinMonth(year, month);
     }
 
-    bool Is_Last_Day_In_month(stDate Date)
+    template<typename T>
+    bool Is_Last_Day_In_month(stDate<T> Date)
     {
         return Date.day == GetLastDayinMonth(Date.year, Date.month);
     }
-
 
     bool Is_Last_Month_In_Year(int month)
     {
         return month == 12;
     }
 
-    stDate IncreaseDateByOneDay(stDate Date) // increase date by one day {function nedded in other function}
+    template<typename T>
+    stDate<T> IncreaseDateByOneDay(stDate<T> Date) // increase date by one day {function needed in other function}
     {
         if (Is_Last_Day_In_month(Date))
         {
@@ -214,7 +204,8 @@ namespace Cal
         return Date;
     }
 
-    bool IsDate1BeforeDate2(stDate Date1, stDate Date2) {
+    template<typename T>
+    bool IsDate1BeforeDate2(stDate<T> Date1, stDate<T> Date2) {
         return (Date1.year < Date2.year) ? true :
             (Date1.year > Date2.year) ? false :
             (Date1.month < Date2.month) ? true :
@@ -222,7 +213,8 @@ namespace Cal
             (Date1.day < Date2.day);
     }
 
-    int GettDiferenceInDays(stDate Date1, stDate Date2, bool IncludeEndDay = false)
+    template<typename T>
+    int GettDiferenceInDays(stDate<T> Date1, stDate<T> Date2, bool IncludeEndDay = false)
     {
         int Days = 0;
         while (IsDate1BeforeDate2(Date1, Date2))
@@ -234,4 +226,13 @@ namespace Cal
         return IncludeEndDay ? ++Days : Days;
     }
 
-} // namespace Cal
+    template<typename T>
+    std::string FullDateFromstruct(stDate<T> date)
+    {
+        std::string FullDate = "";
+        FullDate += std::to_string(date.day) + "/" + std::to_string(date.month) + "/" + std::to_string(date.year);
+
+        return FullDate;
+    }
+
+} // namespace cal

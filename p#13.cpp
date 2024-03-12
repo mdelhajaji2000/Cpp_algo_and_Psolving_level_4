@@ -2,7 +2,7 @@
 
 using namespace std;
 
-bool IsLeabYear(int Year)
+bool IsLeapYear(int Year)
 {
 	return((Year % 4 == 0 && Year % 100 != 0) || (Year % 400 == 0));
 }
@@ -14,7 +14,7 @@ short NumberOfDaysInMonth(short year, short month)
 	}
 
 	short arrNumberOdays[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-	return (month == 2) ? (IsLeabYear(year) ? 29 : 28) : arrNumberOdays[month];
+	return (month == 2) ? (IsLeapYear(year) ? 29 : 28) : arrNumberOdays[month];
 }
 short NumberOfDaysFromTheBeginingOfYear(short year, short month, short day)
 {

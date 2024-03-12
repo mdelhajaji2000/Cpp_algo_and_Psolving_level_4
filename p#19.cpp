@@ -61,14 +61,31 @@ stDate IncreaseDateByOneDay(stDate Date)
     return Date;
 }
 
+void SwapDates(stDate &Date1, stDate &Date2)
+{
+    stDate TempDate;
+    TempDate = Date1;
+    Date1 = Date2;
+    Date2 = TempDate;
+}
+
 int GetDiferenceInDays(stDate Date1, stDate Date2, bool IncludeEndDay = false)
 {
     int Days = 0;
+    short SwapFlagValue = 1;
+    if (!IsDate1BeforeDate2(Date1, Date1))
+    {
+        SwapDates(Date1, Date2);
+        SwapFlagValue = -1;
+    }
+
     while (IsDate1BeforeDate2(Date1, Date2))
     {
         Days++;
         Date1 = IncreaseDateByOneDay(Date1);
     }
+
+    Days *= SwapFlagValue;
 
     return IncludeEndDay ? ++Days : Days;
 }

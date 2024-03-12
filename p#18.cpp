@@ -1,5 +1,8 @@
+#pragma warning(disable : 4996)
+
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include "calander.h"
 
@@ -87,21 +90,34 @@ stDate ReadFullDate()
 }
 
 string FullDateFromstruct(stDate date)
-    {
-        string FullDate = "";
-        FullDate += to_string(date.day) + "/" + to_string(date.month) + "/" + to_string(date.year);
+{
+    string FullDate = "";
+    FullDate += to_string(date.day) + "/" + to_string(date.month) + "/" + to_string(date.year);
 
-        return FullDate;
-    }
+    return FullDate;
+}
+
+stDate getActualDate()
+{
+    stDate Date;
+
+    time_t t = time(0);
+    tm* now = localtime(&t);
+
+    Date.year = now->tm_year + 1900;
+    Date.month = now->tm_mon + 1;
+    Date.day = now->tm_mday;
+
+    return Date;
+}
 
 int main()
 {
-    cout << "enter Date 1 [from] : " << endl;
-    stDate Date1 = ReadFullDate();
-    cout << "enter Date 2 [to] : " << endl;
-    stDate Date2 = ReadFullDate();
-    cout << "The Diference betwin : " << FullDateFromstruct(Date1) << " and " << FullDateFromstruct(Date2) << " is : " << GetDiferenceInDays(Date1, Date2, true) << endl;
-    
+    stDate ActualDate = getActualDate();
+    cout << "enter your birthday : " << endl;
+    stDate birthday = ReadFullDate();
+
+    cout << "you aged : " << GetDiferenceInDays(birthday, ActualDate, true);
 
     return 0;
 }
